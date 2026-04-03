@@ -58,7 +58,7 @@ class ProductRepository extends BaseRepository
 
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortOrder = $filters['sort_order'] ?? 'desc';
-        $this->applySorting($query, $sortBy, $sortOrder);
+        $query = $this->applySorting($query, $sortBy, $sortOrder);
 
         return $query->paginate($perPage);
     }

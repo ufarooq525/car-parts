@@ -18,7 +18,9 @@ class SupplierRepository extends BaseRepository
     {
         $query = $this->query();
 
-        $query = $this->applySearch($query, $filters, ['name', 'code']);
+        if (!empty($filters['search'])) {
+            $query = $this->applySearch($query, $filters['search'], ['name', 'code']);
+        }
 
         if (isset($filters['is_active'])) {
             $query->where('is_active', $filters['is_active']);
@@ -28,7 +30,11 @@ class SupplierRepository extends BaseRepository
             $query->where('type', $filters['type']);
         }
 
-        $query = $this->applySorting($query, $filters);
+        $query = $this->applySorting(
+            $query,
+            $filters['sort_by'] ?? 'created_at',
+            $filters['sort_order'] ?? 'desc'
+        );
 
         return $query->paginate($perPage);
     }
