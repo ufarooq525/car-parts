@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FiShoppingCart, FiMenu, FiX, FiTruck } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
-import { getMakes, getModels, getYears } from '../../api/vehicles';
+import { getMakes, getModels, getYears, YearRange } from '../../api/vehicles';
 import ThemeToggle from '../UI/ThemeToggle';
 import styles from './StoreLayout.module.css';
 
@@ -15,9 +15,9 @@ const StoreLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Vehicle search state
-  const [makes, setMakes] = useState<{ make: string }[]>([]);
-  const [models, setModels] = useState<{ model: string }[]>([]);
-  const [years, setYears] = useState<{ year_from: number; year_to: number }[]>([]);
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
+  const [years, setYears] = useState<YearRange[]>([]);
   const [selectedMake, setSelectedMake] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
@@ -149,8 +149,8 @@ const StoreLayout: React.FC = () => {
             >
               <option value="">Select Make</option>
               {makes.map((m) => (
-                <option key={m.make} value={m.make}>
-                  {m.make}
+                <option key={m} value={m}>
+                  {m}
                 </option>
               ))}
             </select>
@@ -162,8 +162,8 @@ const StoreLayout: React.FC = () => {
             >
               <option value="">Select Model</option>
               {models.map((m) => (
-                <option key={m.model} value={m.model}>
-                  {m.model}
+                <option key={m} value={m}>
+                  {m}
                 </option>
               ))}
             </select>

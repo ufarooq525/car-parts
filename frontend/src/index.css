@@ -10,23 +10,24 @@
 
 /* ─── Light Theme (default) ─── */
 :root {
-  /* Brand */
-  --color-primary: #e94560;
-  --color-primary-hover: #d63a54;
-  --color-primary-light: rgba(233, 69, 96, 0.1);
-  --color-primary-rgb: 233, 69, 96;
+  /* Brand – Deep Navy Blue */
+  --color-primary: #1e3a5f;
+  --color-primary-hover: #162d4a;
+  --color-primary-light: rgba(30, 58, 95, 0.1);
+  --color-primary-rgb: 30, 58, 95;
 
-  /* Accent */
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-accent-light: rgba(59, 130, 246, 0.1);
+  /* Accent – Vivid Orange (CTAs, buttons, highlights) */
+  --color-accent: #f47920;
+  --color-accent-hover: #e06810;
+  --color-accent-light: rgba(244, 121, 32, 0.1);
+  --color-accent-rgb: 244, 121, 32;
 
   /* Backgrounds */
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
   --bg-tertiary: #f1f5f9;
   --bg-elevated: #ffffff;
-  --bg-page: #f0f2f5;
+  --bg-page: #eef1f6;
   --bg-hover: #f8fafc;
   --bg-input: #ffffff;
 
@@ -34,7 +35,7 @@
   --surface-header: #0f172a;
   --surface-sidebar: #1e293b;
   --surface-sidebar-hover: rgba(255, 255, 255, 0.08);
-  --surface-sidebar-active: rgba(233, 69, 96, 0.15);
+  --surface-sidebar-active: rgba(30, 58, 95, 0.25);
 
   /* Text */
   --text-primary: #0f172a;
@@ -43,12 +44,12 @@
   --text-inverse: #ffffff;
   --text-on-header: rgba(255, 255, 255, 0.85);
   --text-on-sidebar: rgba(255, 255, 255, 0.7);
-  --text-link: #e94560;
+  --text-link: #f47920;
 
   /* Borders */
   --border-primary: #e2e8f0;
   --border-secondary: #f1f5f9;
-  --border-focus: #e94560;
+  --border-focus: #f47920;
   --border-input: #cbd5e1;
 
   /* Shadows */
@@ -58,7 +59,7 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+  --shadow-glow: 0 0 0 3px rgba(244, 121, 32, 0.2);
 
   /* Semantic */
   --color-success: #10b981;
@@ -108,7 +109,7 @@
   --surface-header: #0f172a;
   --surface-sidebar: #0f172a;
   --surface-sidebar-hover: rgba(255, 255, 255, 0.06);
-  --surface-sidebar-active: rgba(233, 69, 96, 0.2);
+  --surface-sidebar-active: rgba(244, 121, 32, 0.2);
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;

@@ -13,21 +13,26 @@ export const getVehicle = async (slug: string): Promise<Vehicle> => {
   return response.data.data;
 };
 
-export const getMakes = async (): Promise<{ make: string }[]> => {
+export const getMakes = async (): Promise<string[]> => {
   const response = await apiClient.get('/vehicles/makes');
   return response.data.data;
 };
 
-export const getModels = async (make: string): Promise<{ model: string }[]> => {
-  const response = await apiClient.get(`/vehicles/models`, { params: { make } });
+export const getModels = async (make: string): Promise<string[]> => {
+  const response = await apiClient.get(`/vehicles/makes/${encodeURIComponent(make)}/models`);
   return response.data.data;
 };
+
+export interface YearRange {
+  year_from: number;
+  year_to: number;
+}
 
 export const getYears = async (
   make: string,
   model: string
-): Promise<{ year_from: number; year_to: number }[]> => {
-  const response = await apiClient.get(`/vehicles/years`, { params: { make, model } });
+): Promise<YearRange[]> => {
+  const response = await apiClient.get(`/vehicles/makes/${encodeURIComponent(make)}/models/${encodeURIComponent(model)}/years`);
   return response.data.data;
 };
 

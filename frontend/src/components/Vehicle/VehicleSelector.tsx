@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
-import { getMakes, getModels, getYears } from '../../api/vehicles';
+import { getMakes, getModels, getYears, YearRange } from '../../api/vehicles';
 import styles from './VehicleSelector.module.css';
 
 interface VehicleSelectorProps {
@@ -11,9 +11,9 @@ interface VehicleSelectorProps {
 const VehicleSelector: React.FC<VehicleSelectorProps> = ({ onSearch }) => {
   const navigate = useNavigate();
 
-  const [makes, setMakes] = useState<{ make: string }[]>([]);
-  const [models, setModels] = useState<{ model: string }[]>([]);
-  const [years, setYears] = useState<{ year_from: number; year_to: number }[]>([]);
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
+  const [years, setYears] = useState<YearRange[]>([]);
 
   const [selectedMake, setSelectedMake] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
@@ -81,8 +81,8 @@ const VehicleSelector: React.FC<VehicleSelectorProps> = ({ onSearch }) => {
         >
           <option value="">{loadingMakes ? 'Loading...' : 'Select Make'}</option>
           {makes.map((m) => (
-            <option key={m.make} value={m.make}>
-              {m.make}
+            <option key={m} value={m}>
+              {m}
             </option>
           ))}
         </select>
@@ -98,8 +98,8 @@ const VehicleSelector: React.FC<VehicleSelectorProps> = ({ onSearch }) => {
         >
           <option value="">{loadingModels ? 'Loading...' : 'Select Model'}</option>
           {models.map((m) => (
-            <option key={m.model} value={m.model}>
-              {m.model}
+            <option key={m} value={m}>
+              {m}
             </option>
           ))}
         </select>

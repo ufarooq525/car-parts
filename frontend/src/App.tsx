@@ -12,11 +12,16 @@ import AdminLayout from './components/Layout/AdminLayout';
 import HomePage from './pages/store/HomePage';
 import ProductsPage from './pages/store/ProductsPage';
 import ProductDetailPage from './pages/store/ProductDetailPage';
+import CategoriesPage from './pages/store/CategoriesPage';
 import CategoryPage from './pages/store/CategoryPage';
 import CartPage from './pages/store/CartPage';
 import CheckoutPage from './pages/store/CheckoutPage';
 import OrdersPage from './pages/store/OrdersPage';
 import OrderDetailPage from './pages/store/OrderDetailPage';
+import AboutPage from './pages/store/AboutPage';
+import ContactPage from './pages/store/ContactPage';
+import PrivacyPage from './pages/store/PrivacyPage';
+import TermsPage from './pages/store/TermsPage';
 
 // Auth pages
 import LoginPage from './pages/auth/LoginPage';
@@ -63,8 +68,13 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:slug" element={<ProductDetailPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:slug" element={<CategoryPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
 

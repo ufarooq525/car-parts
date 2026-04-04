@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts } from '../../api/products';
 import { getCategoryTree } from '../../api/categories';
-import { getMakes, getModels, getYears } from '../../api/vehicles';
+import { getMakes, getModels, getYears, YearRange } from '../../api/vehicles';
 import { ProductListItem, CategoryTree } from '../../types';
 import ProductGrid from '../../components/Product/ProductGrid';
 import SearchBar from '../../components/UI/SearchBar';
@@ -37,9 +37,9 @@ const ProductsPage: React.FC = () => {
 
   // Filter options
   const [categories, setCategories] = useState<CategoryTree[]>([]);
-  const [makes, setMakes] = useState<{ make: string }[]>([]);
-  const [models, setModels] = useState<{ model: string }[]>([]);
-  const [years, setYears] = useState<{ year_from: number; year_to: number }[]>([]);
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
+  const [years, setYears] = useState<YearRange[]>([]);
 
   // Load filter options
   useEffect(() => {
@@ -159,7 +159,7 @@ const ProductsPage: React.FC = () => {
             setSelectedModel('');
             setSelectedYear('');
           }}
-          options={makes.map((m) => ({ value: m.make, label: m.make }))}
+          options={makes.map((m) => ({ value: m, label: m }))}
           placeholder="All Makes"
         />
 
@@ -171,7 +171,7 @@ const ProductsPage: React.FC = () => {
             setSelectedModel(e.target.value);
             setSelectedYear('');
           }}
-          options={models.map((m) => ({ value: m.model, label: m.model }))}
+          options={models.map((m) => ({ value: m, label: m }))}
           placeholder="All Models"
           disabled={!selectedMake}
         />

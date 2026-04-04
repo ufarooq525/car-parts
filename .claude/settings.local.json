@@ -47,7 +47,10 @@
       "Bash(find /c/laragon/www/car-parts/frontend/src -type f \\\\\\(-name *.theme* -o -name *.vars* -o -name theme* -o -name variables* \\\\\\))",
       "Bash(node -e \"const fi = require\\(''react-icons/fi''\\); const icons = Object.keys\\(fi\\).filter\\(k => k.match\\(/sun|moon|bright|dark/i\\)\\); console.log\\(icons.join\\('', ''\\)\\)\")",
       "Bash(npm ls:*)",
-      "Bash(node -e \"const fi = require\\(''react-icons/fi''\\); console.log\\(''FiSun'' in fi, ''FiMoon'' in fi\\)\")"
+      "Bash(node -e \"const fi = require\\(''react-icons/fi''\\); console.log\\(''FiSun'' in fi, ''FiMoon'' in fi\\)\")",
+      "Bash(curl -s http://localhost:8000/api/vehicles/makes)",
+      "WebSearch",
+      "WebFetch(domain:www.brandcolorcode.com)"
     ]
   }
 }

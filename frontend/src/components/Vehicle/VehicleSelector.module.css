@@ -51,7 +51,7 @@
 }
 
 .searchBtn {
-  background: var(--color-primary);
+  background: var(--color-accent);
   color: var(--text-inverse);
   border: none;
   padding: 0.6rem 1.5rem;
@@ -68,7 +68,7 @@
 }
 
 .searchBtn:hover:not(:disabled) {
-  background: var(--color-primary-hover);
+  background: var(--color-accent-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
