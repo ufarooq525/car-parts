@@ -50,7 +50,21 @@
       "Bash(node -e \"const fi = require\\(''react-icons/fi''\\); console.log\\(''FiSun'' in fi, ''FiMoon'' in fi\\)\")",
       "Bash(curl -s http://localhost:8000/api/vehicles/makes)",
       "WebSearch",
-      "WebFetch(domain:www.brandcolorcode.com)"
+      "WebFetch(domain:www.brandcolorcode.com)",
+      "WebFetch(domain:mcpmarket.com)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(mkdir -p \"C:/laragon/www/car-parts/.claude/skills/laravel-api\")",
+      "Bash(mkdir -p \"C:/laragon/www/car-parts/.claude/skills/react-component\")",
+      "Bash(mkdir -p \"C:/laragon/www/car-parts/.claude/skills/database\")",
+      "Bash(ls -la \"C:/laragon/www/car-parts/.claude/skills/\"*/SKILL.md)",
+      "Bash(find /c/laragon/www/car-parts/backend -path */bootstrap/*.php -type f)",
+      "Bash(find /c/laragon/www/car-parts/backend/database/migrations -type f -name *margin* -o -name *sync*)",
+      "Bash(grep -r \"type Supplier\\\\|interface Supplier\\\\|type SyncLog\\\\|interface SyncLog\" /c/laragon/www/car-parts/frontend/src/types --include=*.ts --include=*.tsx)",
+      "Bash(node -e \"const fi = require\\(''react-icons/fi''\\); const icons = [''FiUserCheck'',''FiClock'',''FiGlobe'',''FiDatabase'',''FiCheckCircle'',''FiXCircle'',''FiAlertCircle'',''FiUser'']; icons.forEach\\(i => console.log\\(i, !!fi[i]\\)\\)\")",
+      "Bash(node -e \"console.log\\(require\\(''react-icons/package.json''\\).version\\)\")",
+      "Bash(dir \"C:\\\\laragon\\\\www\\\\car-parts\\\\backend\\\\storage\\\\app\\\\public\")",
+      "Bash(dir \"C:\\\\laragon\\\\www\\\\car-parts\\\\backend\\\\database\\\\migrations\" /b)"
     ]
   }
 }

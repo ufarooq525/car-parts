@@ -9,10 +9,12 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isStaff: boolean;
+  isSupplier: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (data: Partial<User>) => Promise<void>;
+  setAuth: (user: User, token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isAuthenticated = !!user && !!token;
   const isAdmin = user?.role === 'admin';
   const isStaff = user?.role === 'admin' || user?.role === 'staff';
+  const isSupplier = user?.role === 'supplier';
 
   const setAuth = useCallback((authUser: User, authToken: string) => {
     setUser(authUser);
@@ -96,10 +99,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         isAdmin,
         isStaff,
+        isSupplier,
         login,
         register,
         logout,
         updateProfile,
+        setAuth,
       }}
     >
       {children}

@@ -31,8 +31,10 @@ export interface User {
   name: string;
   email: string;
   phone: string | null;
-  role: 'admin' | 'staff' | 'customer';
+  role: 'admin' | 'staff' | 'customer' | 'supplier';
   is_active: boolean;
+  supplier_id?: number | null;
+  approval_status?: 'pending' | 'under_review' | 'approved' | 'rejected' | null;
   orders_count?: number;
   created_at: string;
 }
@@ -138,14 +140,58 @@ export interface Supplier {
   id: number;
   name: string;
   code: string;
-  type: 'api' | 'xml' | 'csv';
+  contact_person: string | null;
+  email: string | null;
+  phone: string | null;
+  website: string | null;
+  business_license: string | null;
+  tax_id: string | null;
+  address: string | null;
+  description: string | null;
+  type: 'api' | 'xml' | 'csv' | 'none';
   api_endpoint: string | null;
+  api_url: string | null;
   feed_url: string | null;
+  csv_file_path: string | null;
+  csv_original_name: string | null;
   sync_interval_minutes: number;
   is_active: boolean;
+  approval_status: 'pending' | 'under_review' | 'approved' | 'rejected';
+  rejection_reason: string | null;
+  approved_at: string | null;
   products_count?: number;
   latest_sync?: SyncLog;
   created_at: string;
+}
+
+export interface SupplierRegisterData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  phone?: string;
+  company_name: string;
+  contact_person: string;
+  company_phone?: string;
+  website?: string;
+  business_license?: string;
+  tax_id?: string;
+  address?: string;
+  description?: string;
+  feed_type?: 'api' | 'xml' | 'csv' | '';
+  api_url?: string;
+  feed_url?: string;
+  csv_file?: File;
+}
+
+export interface SupplierDashboardData {
+  supplier: Supplier;
+  stats: {
+    products_count: number;
+    approval_status: string;
+    is_active: boolean;
+    last_synced_at: string | null;
+  };
 }
 
 export interface SyncLog {

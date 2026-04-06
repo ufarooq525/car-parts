@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiShoppingCart, FiPackage } from 'react-icons/fi';
+import { FiShoppingCart, FiPackage, FiHeart } from 'react-icons/fi';
 import { ProductListItem } from '../../types';
 import styles from './ProductCard.module.css';
 
@@ -10,14 +10,22 @@ interface ProductCardProps {
 }
 
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('de-DE', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'EUR',
+    minimumFractionDigits: 2,
   }).format(price);
+};
+
+const getStockLabel = (qty: number): { label: string; className: string } => {
+  if (qty > 10) return { label: 'IN STOCK', className: styles.badgeInStock };
+  if (qty > 0) return { label: 'LOW STOCK', className: styles.badgeLowStock };
+  return { label: 'BACKORDER', className: styles.badgeBackorder };
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const inStock = product.stock_quantity > 0;
+  const stock = getStockLabel(product.stock_quantity);
 
   return (
     <div className={styles.card}>
@@ -34,30 +42,41 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
             <FiPackage />
           </div>
         )}
-        {product.category_name && (
-          <span className={styles.categoryBadge}>{product.category_name}</span>
-        )}
-        <span className={`${styles.stockBadge} ${inStock ? styles.inStock : styles.outOfStock}`}>
-          {inStock ? 'In Stock' : 'Out of Stock'}
+        <span className={`${styles.stockBadge} ${stock.className}`}>
+          {stock.label}
         </span>
       </Link>
 
       <div className={styles.body}>
-        <h3 className={styles.name}>
-          <Link to={`/products/${product.slug}`} className={styles.nameLink}>
-            {product.name}
-          </Link>
-        </h3>
+        <div className={styles.nameRow}>
+          <h3 className={styles.name}>
+            <Link to={`/products/${product.slug}`} className={styles.nameLink}>
+              {product.name}
+            </Link>
+          </h3>
+          <button className={styles.wishlistBtn} aria-label="Add to wishlist">
+            <FiHeart />
+          </button>
+        </div>
+
         <span className={styles.sku}>SKU: {product.sku}</span>
-        <span className={styles.price}>{formatPrice(product.sell_price)}</span>
-        <button
-          className={styles.addToCartBtn}
-          onClick={() => onAddToCart?.(product.id)}
-          disabled={!inStock}
-        >
-          <FiShoppingCart />
-          {inStock ? 'Add to Cart' : 'Out of Stock'}
-        </button>
+
+        <div className={styles.priceRow}>
+          <div className={styles.priceBlock}>
+            {product.category_name && (
+              <span className={styles.priceLabel}>{product.category_name}</span>
+            )}
+            <span className={styles.price}>{formatPrice(product.sell_price)}</span>
+          </div>
+          <button
+            className={styles.addToCartBtn}
+            onClick={() => onAddToCart?.(product.id)}
+            disabled={!inStock}
+            aria-label="Add to cart"
+          >
+            <FiShoppingCart />
+          </button>
+        </div>
       </div>
     </div>
   );

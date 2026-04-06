@@ -17,7 +17,7 @@ Route::prefix('categories')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin/categories')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin/categories')->middleware(['auth:sanctum', 'role:admin|staff'])->group(function () {
     Route::post('/', [CategoryController::class, 'store']);
     Route::put('/{category}', [CategoryController::class, 'update']);
     Route::delete('/{category}', [CategoryController::class, 'destroy']);

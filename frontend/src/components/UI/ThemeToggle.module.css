@@ -3,26 +3,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--store-border, rgba(255, 255, 255, 0.1));
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
   cursor: pointer;
-  transition: background var(--transition-fast);
-  color: var(--text-on-header);
-  font-size: 1.15rem;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  color: var(--store-text-secondary, var(--text-on-header));
+  font-size: 1.1rem;
   line-height: 1;
 }
 
 .toggle:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--store-bg-input, rgba(255, 255, 255, 0.08));
+  border-color: var(--store-border-hover, rgba(255, 255, 255, 0.2));
 }
 
 .iconWrapper {
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,9 +34,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  font-size: 1.15rem;
+  width: 20px;
+  height: 20px;
+  font-size: 1.1rem;
   transition: all var(--transition-base);
   opacity: 0;
   transform: rotate(-90deg) scale(0.5);

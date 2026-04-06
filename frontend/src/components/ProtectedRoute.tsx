@@ -5,10 +5,11 @@ import LoadingSpinner from './UI/LoadingSpinner';
 
 interface ProtectedRouteProps {
   requireAdmin?: boolean;
+  requireSupplier?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requireAdmin = false }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requireAdmin = false, requireSupplier = false }) => {
+  const { isAuthenticated, isAdmin, isSupplier, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -20,6 +21,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requireAdmin = false })
   }
 
   if (requireAdmin && !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (requireSupplier && !isSupplier) {
     return <Navigate to="/" replace />;
   }
 

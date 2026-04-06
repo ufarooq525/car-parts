@@ -7,6 +7,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import StoreLayout from './components/Layout/StoreLayout';
 import AdminLayout from './components/Layout/AdminLayout';
+import SupplierLayout from './components/Layout/SupplierLayout';
 
 // Store pages
 import HomePage from './pages/store/HomePage';
@@ -27,17 +28,25 @@ import TermsPage from './pages/store/TermsPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ProfilePage from './pages/auth/ProfilePage';
+import SupplierRegisterPage from './pages/auth/SupplierRegisterPage';
 
 // Admin pages
 import DashboardPage from './pages/admin/DashboardPage';
 import ProductsAdminPage from './pages/admin/ProductsAdminPage';
 import CategoriesAdminPage from './pages/admin/CategoriesAdminPage';
 import SuppliersAdminPage from './pages/admin/SuppliersAdminPage';
+import SupplierApprovalsPage from './pages/admin/SupplierApprovalsPage';
 import OrdersAdminPage from './pages/admin/OrdersAdminPage';
 import OrderDetailAdminPage from './pages/admin/OrderDetailAdminPage';
 import VehiclesAdminPage from './pages/admin/VehiclesAdminPage';
 import UsersAdminPage from './pages/admin/UsersAdminPage';
 import MarginRulesAdminPage from './pages/admin/MarginRulesAdminPage';
+
+// Supplier portal pages
+import SupplierDashboardPage from './pages/supplier/SupplierDashboardPage';
+import SupplierProductsPage from './pages/supplier/SupplierProductsPage';
+import SupplierSyncLogsPage from './pages/supplier/SupplierSyncLogsPage';
+import SupplierSettingsPage from './pages/supplier/SupplierSettingsPage';
 
 import './App.css';
 
@@ -76,6 +85,7 @@ function App() {
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/supplier/register" element={<SupplierRegisterPage />} />
 
               {/* Protected customer routes */}
               <Route element={<ProtectedRoute />}>
@@ -86,6 +96,16 @@ function App() {
               </Route>
             </Route>
 
+            {/* Supplier portal routes */}
+            <Route element={<ProtectedRoute requireSupplier />}>
+              <Route element={<SupplierLayout />}>
+                <Route path="/supplier" element={<SupplierDashboardPage />} />
+                <Route path="/supplier/products" element={<SupplierProductsPage />} />
+                <Route path="/supplier/sync-logs" element={<SupplierSyncLogsPage />} />
+                <Route path="/supplier/settings" element={<SupplierSettingsPage />} />
+              </Route>
+            </Route>
+
             {/* Admin routes */}
             <Route element={<ProtectedRoute requireAdmin />}>
               <Route element={<AdminLayout />}>
@@ -93,6 +113,7 @@ function App() {
                 <Route path="/admin/products" element={<ProductsAdminPage />} />
                 <Route path="/admin/categories" element={<CategoriesAdminPage />} />
                 <Route path="/admin/suppliers" element={<SuppliersAdminPage />} />
+                <Route path="/admin/supplier-approvals" element={<SupplierApprovalsPage />} />
                 <Route path="/admin/orders" element={<OrdersAdminPage />} />
                 <Route path="/admin/orders/:id" element={<OrderDetailAdminPage />} />
                 <Route path="/admin/vehicles" element={<VehiclesAdminPage />} />

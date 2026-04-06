@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiTruck, FiLock, FiCheck, FiArrowRight } from 'react-icons/fi';
+import { FiTruck, FiShield, FiZap, FiArrowRight, FiSearch } from 'react-icons/fi';
 import { getCategoryTree } from '../../api/categories';
 import { getProducts } from '../../api/products';
 import { CategoryTree, ProductListItem } from '../../types';
@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
       .catch(() => toast.error('Failed to load categories'))
       .finally(() => setLoadingCategories(false));
 
-    getProducts({ per_page: 8, sort: 'created_at', direction: 'desc' })
+    getProducts({ per_page: 6, sort: 'created_at', direction: 'desc' })
       .then((res) => setLatestProducts(res.data))
       .catch(() => toast.error('Failed to load products'))
       .finally(() => setLoadingProducts(false));
@@ -46,10 +46,15 @@ const HomePage: React.FC = () => {
     <div className={styles.page}>
       {/* Hero Banner */}
       <section className={styles.hero}>
+        <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Find the Right Parts for Your Car</h1>
+          <span className={styles.heroBadge}>Premium Auto Parts</span>
+          <h1 className={styles.heroTitle}>
+            Find the Right Parts<br />
+            <span className={styles.heroAccent}>for Your Vehicle</span>
+          </h1>
           <p className={styles.heroSubtitle}>
-            Search by vehicle to find compatible parts quickly and easily.
+            Search by vehicle to find compatible, high-performance components instantly.
           </p>
           <div className={styles.heroSelector}>
             <VehicleSelector />
@@ -70,13 +75,15 @@ const HomePage: React.FC = () => {
         ) : (
           <div className={styles.categoryGrid}>
             {categories.slice(0, 8).map((cat) => (
-              <Card
+              <div
                 key={cat.id}
                 className={styles.categoryCard}
-                onClick={() => navigate(`/categories/${cat.slug}`)}
+                onClick={() => navigate(`/products?category=${cat.id}`)}
+                role="button"
+                tabIndex={0}
               >
-                <div className={styles.categoryImagePlaceholder}>
-                  <FiTruck size={32} />
+                <div className={styles.categoryIcon}>
+                  <FiSearch size={24} />
                 </div>
                 <h3 className={styles.categoryName}>{cat.name}</h3>
                 {cat.children && cat.children.length > 0 && (
@@ -84,7 +91,7 @@ const HomePage: React.FC = () => {
                     {cat.children.length} subcategories
                   </span>
                 )}
-              </Card>
+              </div>
             ))}
           </div>
         )}
@@ -111,29 +118,29 @@ const HomePage: React.FC = () => {
         <div className={styles.featuresGrid}>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>
-              <FiTruck size={36} />
+              <FiTruck size={32} />
             </div>
             <h3 className={styles.featureTitle}>Fast Delivery</h3>
             <p className={styles.featureText}>
-              Quick and reliable shipping to get your parts to you as soon as possible.
+              Express shipping across Europe. Get your parts in 1-3 business days.
             </p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>
-              <FiLock size={36} />
+              <FiShield size={32} />
             </div>
-            <h3 className={styles.featureTitle}>Quality Parts</h3>
+            <h3 className={styles.featureTitle}>Quality Guarantee</h3>
             <p className={styles.featureText}>
-              Sourced from trusted suppliers to ensure reliability and performance.
+              OEM-grade components from trusted suppliers with full warranty.
             </p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>
-              <FiCheck size={36} />
+              <FiZap size={32} />
             </div>
-            <h3 className={styles.featureTitle}>Secure Payment</h3>
+            <h3 className={styles.featureTitle}>Expert Support</h3>
             <p className={styles.featureText}>
-              Multiple payment options with encrypted and secure transactions.
+              Technical assistance from automotive specialists available 24/7.
             </p>
           </div>
         </div>

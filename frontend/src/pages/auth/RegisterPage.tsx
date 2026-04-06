@@ -48,6 +48,8 @@ const RegisterPage: React.FC = () => {
         </form>
         <div className={styles.footer}>
           Already have an account? <Link to="/login">Sign in</Link>
+          <br />
+          <span style={{ fontSize: '0.85rem' }}>Are you a supplier? <Link to="/supplier/register">Register as a supplier</Link></span>
         </div>
       </div>
     </div>

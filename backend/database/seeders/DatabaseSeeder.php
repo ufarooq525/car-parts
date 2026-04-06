@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Seed roles & permissions first (Spatie)
+        $this->call(RolesAndPermissionsSeeder::class);
+
         $this->seedUsers();
         $categories = $this->seedCategories();
         $suppliers = $this->seedSuppliers();
@@ -27,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $products = $this->seedProducts($categories, $suppliers, $vehicles);
         $this->seedMarginRules($suppliers, $categories);
         $this->seedOrders($products);
+        $this->seedSupplierUsers($suppliers);
 
         $this->command->info('Database seeded successfully!');
     }
@@ -34,7 +38,7 @@ class DatabaseSeeder extends Seeder
     private function seedUsers(): void
     {
         // Admin user
-        User::create([
+        $admin = User::create([
             'name'     => 'Admin User',
             'email'    => 'admin@carparts.com',
             'password' => Hash::make('password'),
@@ -42,9 +46,10 @@ class DatabaseSeeder extends Seeder
             'phone'    => '+351 912 345 678',
             'is_active' => true,
         ]);
+        $admin->assignRole('admin');
 
         // Staff user
-        User::create([
+        $staff = User::create([
             'name'     => 'Staff Member',
             'email'    => 'staff@carparts.com',
             'password' => Hash::make('password'),
@@ -52,6 +57,7 @@ class DatabaseSeeder extends Seeder
             'phone'    => '+351 913 456 789',
             'is_active' => true,
         ]);
+        $staff->assignRole('staff');
 
         // Customer users
         $customers = [
@@ -63,7 +69,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($customers as $c) {
-            User::create([
+            $user = User::create([
                 'name'     => $c['name'],
                 'email'    => $c['email'],
                 'password' => Hash::make('password'),
@@ -71,6 +77,7 @@ class DatabaseSeeder extends Seeder
                 'phone'    => $c['phone'],
                 'is_active' => true,
             ]);
+            $user->assignRole('customer');
         }
 
         $this->command->info('  Users seeded (7 users, login: admin@carparts.com / password)');
@@ -126,34 +133,64 @@ class DatabaseSeeder extends Seeder
         $supplierA = Supplier::create([
             'name' => 'DeepCar Parts',
             'code' => 'DEEPCAR',
+            'contact_person' => 'Hans Mueller',
+            'email' => 'supplier1@deepcar.eu',
+            'phone' => '+49 30 123 456',
+            'website' => 'https://deepcar-parts.eu',
+            'business_license' => 'DE-BL-2024-1234',
+            'tax_id' => 'DE123456789',
+            'address' => 'Berliner Str. 42, 10115 Berlin, Germany',
+            'description' => 'Leading European automotive parts distributor with over 500,000 SKUs.',
             'type' => 'api',
             'api_url' => 'https://api.deepcar-parts.eu/v1',
             'sync_interval_minutes' => 60,
             'default_margin_type' => 'percentage',
             'default_margin_value' => 25,
             'is_active' => true,
+            'approval_status' => 'approved',
+            'approved_at' => now()->subMonths(3),
         ]);
 
         $supplierB = Supplier::create([
             'name' => 'NL Parts Europe',
             'code' => 'NLPARTS',
+            'contact_person' => 'Jan de Vries',
+            'email' => 'supplier2@nlparts.eu',
+            'phone' => '+31 20 789 012',
+            'website' => 'https://nlparts.eu',
+            'business_license' => 'NL-BL-2023-5678',
+            'tax_id' => 'NL987654321',
+            'address' => 'Keizersgracht 100, 1015 Amsterdam, Netherlands',
+            'description' => 'Dutch OEM and aftermarket parts supplier specializing in German and French vehicles.',
             'type' => 'xml',
             'feed_url' => 'https://feeds.nlparts.eu/products.xml',
             'sync_interval_minutes' => 120,
             'default_margin_type' => 'percentage',
             'default_margin_value' => 30,
             'is_active' => true,
+            'approval_status' => 'approved',
+            'approved_at' => now()->subMonths(2),
         ]);
 
         $supplierC = Supplier::create([
             'name' => 'Auto Pecas Global',
             'code' => 'APGLOBAL',
+            'contact_person' => 'Ricardo Santos',
+            'email' => 'supplier3@autopecas.pt',
+            'phone' => '+351 21 456 789',
+            'website' => 'https://autopecas.global',
+            'business_license' => 'PT-BL-2024-9012',
+            'tax_id' => 'PT501234567',
+            'address' => 'Av. da Liberdade 200, 1250-147 Lisboa, Portugal',
+            'description' => 'Portuguese auto parts wholesaler with direct factory relationships.',
             'type' => 'csv',
             'feed_url' => 'https://autopecas.global/export/products.csv',
             'sync_interval_minutes' => 360,
             'default_margin_type' => 'percentage',
             'default_margin_value' => 20,
             'is_active' => true,
+            'approval_status' => 'approved',
+            'approved_at' => now()->subMonths(1),
         ]);
 
         // Create sync logs for suppliers
@@ -435,5 +472,119 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info('  Orders seeded (' . Order::count() . ' orders with items)');
+    }
+
+    private function seedSupplierUsers(array $suppliers): void
+    {
+        // Approved supplier user (linked to DeepCar Parts)
+        $supplierUser1 = User::create([
+            'name'        => 'Hans Mueller',
+            'email'       => 'supplier1@deepcar.eu',
+            'password'    => Hash::make('password'),
+            'role'        => 'supplier',
+            'phone'       => '+49 30 123 456',
+            'is_active'   => true,
+            'supplier_id' => $suppliers['supplierA']->id,
+        ]);
+        $supplierUser1->assignRole('supplier');
+
+        // Approved supplier user (linked to NL Parts)
+        $supplierUser2 = User::create([
+            'name'        => 'Jan de Vries',
+            'email'       => 'supplier2@nlparts.eu',
+            'password'    => Hash::make('password'),
+            'role'        => 'supplier',
+            'phone'       => '+31 20 789 012',
+            'is_active'   => true,
+            'supplier_id' => $suppliers['supplierB']->id,
+        ]);
+        $supplierUser2->assignRole('supplier');
+
+        // Pending supplier (new application - NOT yet approved)
+        $pendingSupplier = Supplier::create([
+            'name'             => 'TurkParts International',
+            'code'             => 'SUP-TURKPARTS',
+            'contact_person'   => 'Mehmet Yilmaz',
+            'email'            => 'info@turkparts.com',
+            'phone'            => '+90 212 555 1234',
+            'website'          => 'https://turkparts.com',
+            'business_license' => 'TR-BL-2026-4567',
+            'tax_id'           => 'TR9876543210',
+            'address'          => 'Ataturk Cad. No:15, 34000 Istanbul, Turkey',
+            'description'      => 'Large-scale Turkish automotive parts manufacturer exporting to 40+ countries. Specializing in brake components and suspension parts.',
+            'type'             => 'api',
+            'api_url'          => 'https://api.turkparts.com/v2',
+            'is_active'        => false,
+            'approval_status'  => 'pending',
+        ]);
+
+        $pendingUser = User::create([
+            'name'        => 'Mehmet Yilmaz',
+            'email'       => 'info@turkparts.com',
+            'password'    => Hash::make('password'),
+            'role'        => 'supplier',
+            'phone'       => '+90 212 555 1234',
+            'is_active'   => true,
+            'supplier_id' => $pendingSupplier->id,
+        ]);
+        $pendingUser->assignRole('supplier');
+
+        // Under review supplier
+        $reviewSupplier = Supplier::create([
+            'name'             => 'EuroParts Express',
+            'code'             => 'SUP-EUROEXP',
+            'contact_person'   => 'Sophie Dubois',
+            'email'            => 'contact@europartsexpress.fr',
+            'phone'            => '+33 1 234 5678',
+            'website'          => 'https://europartsexpress.fr',
+            'business_license' => 'FR-BL-2026-7890',
+            'tax_id'           => 'FR12345678901',
+            'address'          => '15 Rue de Rivoli, 75001 Paris, France',
+            'description'      => 'French automotive parts express delivery service with same-day shipping across Europe.',
+            'type'             => 'xml',
+            'feed_url'         => 'https://europartsexpress.fr/feed/products.xml',
+            'is_active'        => false,
+            'approval_status'  => 'under_review',
+        ]);
+
+        $reviewUser = User::create([
+            'name'        => 'Sophie Dubois',
+            'email'       => 'contact@europartsexpress.fr',
+            'password'    => Hash::make('password'),
+            'role'        => 'supplier',
+            'phone'       => '+33 1 234 5678',
+            'is_active'   => true,
+            'supplier_id' => $reviewSupplier->id,
+        ]);
+        $reviewUser->assignRole('supplier');
+
+        // Rejected supplier
+        $rejectedSupplier = Supplier::create([
+            'name'              => 'CheapParts Co.',
+            'code'              => 'SUP-CHEAPPARTS',
+            'contact_person'    => 'John Doe',
+            'email'             => 'info@cheapparts.xyz',
+            'phone'             => '+1 555 000 0000',
+            'website'           => 'https://cheapparts.xyz',
+            'description'       => 'Discount auto parts.',
+            'type'              => 'csv',
+            'feed_url'          => 'https://cheapparts.xyz/products.csv',
+            'is_active'         => false,
+            'approval_status'   => 'rejected',
+            'rejection_reason'  => 'Insufficient business documentation. No valid business license or tax ID provided. Website appears inactive.',
+        ]);
+
+        $rejectedUser = User::create([
+            'name'        => 'John Doe',
+            'email'       => 'info@cheapparts.xyz',
+            'password'    => Hash::make('password'),
+            'role'        => 'supplier',
+            'phone'       => '+1 555 000 0000',
+            'is_active'   => true,
+            'supplier_id' => $rejectedSupplier->id,
+        ]);
+        $rejectedUser->assignRole('supplier');
+
+        $this->command->info('  Supplier users seeded (5 supplier accounts: 2 approved, 1 pending, 1 under review, 1 rejected)');
     }
 }

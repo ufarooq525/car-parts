@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Admin routes
-Route::prefix('admin/users')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin/users')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{user}', [UserController::class, 'show']);
     Route::put('/{user}', [UserController::class, 'update']);

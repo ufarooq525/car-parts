@@ -1,191 +1,116 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { FiShoppingCart, FiMenu, FiX, FiTruck } from 'react-icons/fi';
+import {
+  FiShoppingCart,
+  FiMenu,
+  FiX,
+  FiHeart,
+  FiUser,
+  FiSearch,
+  FiMail,
+  FiGlobe,
+  FiArrowRight,
+} from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
-import { getMakes, getModels, getYears, YearRange } from '../../api/vehicles';
 import ThemeToggle from '../UI/ThemeToggle';
 import styles from './StoreLayout.module.css';
+
+const navItems = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/products', label: 'Products' },
+  { to: '/categories', label: 'Categories' },
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Contact' },
+];
 
 const StoreLayout: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Vehicle search state
-  const [makes, setMakes] = useState<string[]>([]);
-  const [models, setModels] = useState<string[]>([]);
-  const [years, setYears] = useState<YearRange[]>([]);
-  const [selectedMake, setSelectedMake] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
-
-  useEffect(() => {
-    getMakes()
-      .then(setMakes)
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (selectedMake) {
-      setSelectedModel('');
-      setSelectedYear('');
-      setModels([]);
-      setYears([]);
-      getModels(selectedMake)
-        .then(setModels)
-        .catch(() => {});
-    }
-  }, [selectedMake]);
-
-  useEffect(() => {
-    if (selectedMake && selectedModel) {
-      setSelectedYear('');
-      setYears([]);
-      getYears(selectedMake, selectedModel)
-        .then(setYears)
-        .catch(() => {});
-    }
-  }, [selectedMake, selectedModel]);
-
-  const handleVehicleSearch = () => {
-    const params = new URLSearchParams();
-    if (selectedMake) params.set('make', selectedMake);
-    if (selectedModel) params.set('model', selectedModel);
-    if (selectedYear) params.set('year', selectedYear);
-    navigate(`/products?${params.toString()}`);
-  };
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogout = async () => {
     await logout();
     navigate('/');
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
     <div className={styles.layout}>
       {/* Header */}
       <header className={styles.header}>
-        <div className={styles.headerTop}>
+        <div className={styles.headerInner}>
           <Link to="/" className={styles.logo}>
-            <FiTruck />
-            Car Parts <span className={styles.logoAccent}>Store</span>
+            <span className={styles.logoText}>DEEPCAR</span>
+            <span className={styles.logoAccent}>AUTO</span>
           </Link>
 
-          <button
-            className={styles.mobileMenuBtn}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <FiX /> : <FiMenu />}
-          </button>
-
           <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''}`}>
-            <NavLink
-              to="/"
-              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/products"
-              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Products
-            </NavLink>
-            <NavLink
-              to="/categories"
-              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Categories
-            </NavLink>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.label}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+                }
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.label}
+              </NavLink>
+            ))}
           </nav>
+
+          <form className={styles.searchBar} onSubmit={handleSearch}>
+            <FiSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Search components..."
+              className={styles.searchInput}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
 
           <div className={styles.headerActions}>
             <ThemeToggle />
-            <button className={styles.cartButton} onClick={() => navigate('/cart')} aria-label="Cart">
+            <button className={styles.iconBtn} onClick={() => navigate('/products')} aria-label="Wishlist">
+              <FiHeart />
+            </button>
+            <button className={styles.iconBtn} onClick={() => navigate('/cart')} aria-label="Cart">
               <FiShoppingCart />
               {itemCount > 0 && <span className={styles.cartBadge}>{itemCount}</span>}
             </button>
-
             {isAuthenticated ? (
-              <>
-                <Link to="/profile" className={styles.authLink}>
-                  {user?.name}
+              <div className={styles.accountMenu}>
+                <Link to="/profile" className={styles.accountLink}>
+                  <FiUser />
+                  <span>{user?.name?.split(' ')[0]}</span>
                 </Link>
-                <span className={styles.authDivider}>|</span>
-                <button className={styles.authButton} onClick={handleLogout}>
+                <button className={styles.accountLogout} onClick={handleLogout}>
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
-              <>
-                <Link to="/login" className={styles.authLink}>
-                  Login
-                </Link>
-                <span className={styles.authDivider}>|</span>
-                <Link to="/register" className={styles.authLink}>
-                  Register
-                </Link>
-              </>
+              <Link to="/login" className={styles.accountLink}>
+                <FiUser />
+                <span>Account</span>
+              </Link>
             )}
-          </div>
-        </div>
-
-        {/* Vehicle search bar */}
-        <div className={styles.vehicleBar}>
-          <div className={styles.vehicleBarInner}>
-            <span className={styles.vehicleLabel}>
-              <FiTruck /> Find parts for your vehicle:
-            </span>
-            <select
-              className={styles.vehicleSelect}
-              value={selectedMake}
-              onChange={(e) => setSelectedMake(e.target.value)}
-            >
-              <option value="">Select Make</option>
-              {makes.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-            <select
-              className={styles.vehicleSelect}
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={!selectedMake}
-            >
-              <option value="">Select Model</option>
-              {models.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-            <select
-              className={styles.vehicleSelect}
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-              disabled={!selectedModel}
-            >
-              <option value="">Select Year</option>
-              {years.map((y) => (
-                <option key={`${y.year_from}-${y.year_to}`} value={String(y.year_from)}>
-                  {y.year_from === y.year_to ? y.year_from : `${y.year_from}-${y.year_to}`}
-                </option>
-              ))}
-            </select>
             <button
-              className={styles.vehicleSearchBtn}
-              onClick={handleVehicleSearch}
-              disabled={!selectedMake}
+              className={styles.mobileMenuBtn}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
             >
-              Search Parts
+              {mobileMenuOpen ? <FiX /> : <FiMenu />}
             </button>
           </div>
         </div>
@@ -197,23 +122,49 @@ const StoreLayout: React.FC = () => {
       {/* Footer */}
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
-          <span className={styles.footerCopyright}>
-            &copy; {new Date().getFullYear()} Car Parts Store. All rights reserved.
-          </span>
-          <div className={styles.footerLinks}>
-            <Link to="/about" className={styles.footerLink}>
-              About Us
-            </Link>
-            <Link to="/contact" className={styles.footerLink}>
-              Contact
-            </Link>
-            <Link to="/privacy" className={styles.footerLink}>
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className={styles.footerLink}>
-              Terms of Service
-            </Link>
+          <div className={styles.footerCol}>
+            <h3 className={styles.footerBrand}>DEEPCAR<span>AUTO</span></h3>
+            <p className={styles.footerAbout}>
+              Engineering excellence since 2024. Europe's leading curator for performance automotive hardware and precision components.
+            </p>
+            <div className={styles.footerSocial}>
+              <a href="/" className={styles.socialIcon} aria-label="Website"><FiGlobe /></a>
+              <a href="/" className={styles.socialIcon} aria-label="Email"><FiMail /></a>
+            </div>
           </div>
+
+          <div className={styles.footerCol}>
+            <h4 className={styles.footerHeading}>SUPPORT</h4>
+            <Link to="/about" className={styles.footerLink}>Shipping Policy</Link>
+            <Link to="/terms" className={styles.footerLink}>Returns</Link>
+            <Link to="/terms" className={styles.footerLink}>Warranty</Link>
+          </div>
+
+          <div className={styles.footerCol}>
+            <h4 className={styles.footerHeading}>COMPANY</h4>
+            <Link to="/contact" className={styles.footerLink}>Contact Us</Link>
+            <Link to="/about" className={styles.footerLink}>About Us</Link>
+            <Link to="/privacy" className={styles.footerLink}>Privacy</Link>
+          </div>
+
+          <div className={styles.footerCol}>
+            <h4 className={styles.footerHeading}>NEWSLETTER</h4>
+            <p className={styles.footerNewsText}>Technical updates & new releases.</p>
+            <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder="Email Address"
+                className={styles.newsletterInput}
+              />
+              <button type="submit" className={styles.newsletterBtn}>
+                <FiArrowRight />
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className={styles.footerBottom}>
+          <span>&copy; {new Date().getFullYear()} DEEPCARAUTO. Engineering Excellence.</span>
         </div>
       </footer>
     </div>

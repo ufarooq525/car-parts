@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin/orders')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin/orders')->middleware(['auth:sanctum', 'role:admin|staff'])->group(function () {
     Route::get('/', [OrderController::class, 'index']);
     Route::put('/{order}/status', [OrderController::class, 'updateStatus']);
 });

@@ -19,7 +19,7 @@ Route::prefix('vehicles')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin/vehicles')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin/vehicles')->middleware(['auth:sanctum', 'role:admin|staff'])->group(function () {
     Route::post('/', [VehicleController::class, 'store']);
     Route::put('/{vehicle}', [VehicleController::class, 'update']);
     Route::delete('/{vehicle}', [VehicleController::class, 'destroy']);

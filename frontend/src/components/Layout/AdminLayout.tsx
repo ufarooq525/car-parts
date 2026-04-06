@@ -13,6 +13,7 @@ import {
   FiX,
   FiLogOut,
   FiExternalLink,
+  FiUserCheck,
 } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import ThemeToggle from '../UI/ThemeToggle';
@@ -23,6 +24,7 @@ const navItems = [
   { to: '/admin/products', icon: FiPackage, label: 'Products' },
   { to: '/admin/categories', icon: FiFolder, label: 'Categories' },
   { to: '/admin/suppliers', icon: FiTruck, label: 'Suppliers' },
+  { to: '/admin/supplier-approvals', icon: FiUserCheck, label: 'Approvals' },
   { to: '/admin/vehicles', icon: FiSettings, label: 'Vehicles' },
   { to: '/admin/orders', icon: FiShoppingBag, label: 'Orders' },
   { to: '/admin/users', icon: FiUsers, label: 'Users' },

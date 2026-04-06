@@ -16,7 +16,9 @@ const LoginPage: React.FC = () => {
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate(user?.role === 'admin' ? '/admin' : '/');
+      if (user?.role === 'admin') navigate('/admin');
+      else if (user?.role === 'supplier') navigate('/supplier');
+      else navigate('/');
     }
   }, [isAuthenticated, user, navigate]);
 
@@ -49,6 +51,8 @@ const LoginPage: React.FC = () => {
         </form>
         <div className={styles.footer}>
           Don't have an account? <Link to="/register">Create one</Link>
+          <br />
+          <span style={{ fontSize: '0.85rem' }}>Are you a supplier? <Link to="/supplier/register">Register here</Link></span>
         </div>
       </div>
     </div>

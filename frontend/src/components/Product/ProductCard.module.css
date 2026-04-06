@@ -1,42 +1,25 @@
 .card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+  background: var(--store-bg-card);
+  border: 1px solid var(--store-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
   display: flex;
   flex-direction: column;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-6px);
-  border-color: var(--border-focus);
+  border-color: var(--store-border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
 }
 
+/* Image */
 .imageWrapper {
   position: relative;
-  aspect-ratio: 1;
-  background: var(--bg-secondary);
+  aspect-ratio: 4 / 3;
+  background: var(--store-bg-input);
   overflow: hidden;
-}
-
-.imageWrapper::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.card:hover .imageWrapper::after {
-  opacity: 1;
 }
 
 .image {
@@ -47,7 +30,7 @@
 }
 
 .card:hover .image {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .placeholder {
@@ -56,60 +39,63 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-tertiary);
+  color: var(--store-text-tertiary);
   font-size: 3rem;
+  background: var(--store-bg-input);
 }
 
-.categoryBadge {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 0.75rem;
-  background: var(--color-primary);
-  color: #ffffff;
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
-  font-weight: 600;
-  z-index: 2;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
+/* Stock Badge */
 .stockBadge {
   position: absolute;
   top: 0.75rem;
-  right: 0.75rem;
-  padding: 0.25rem 0.7rem;
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
-  font-weight: 600;
+  left: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   z-index: 2;
-  letter-spacing: 0.02em;
 }
 
-.inStock {
-  background: var(--color-success);
-  color: var(--text-inverse);
+.badgeInStock {
+  background: var(--store-accent);
+  color: #000;
 }
 
-.outOfStock {
-  background: var(--color-danger);
-  color: var(--text-inverse);
+.badgeLowStock {
+  background: #f59e0b;
+  color: #000;
 }
 
+.badgeBackorder {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+}
+
+/* Body */
 .body {
-  padding: 1rem 1.125rem;
+  padding: 1rem 1.125rem 1.125rem;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+.nameRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
 .name {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 0.25rem;
-  line-height: 1.3;
+  color: var(--store-text-primary);
+  margin: 0;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -123,45 +109,80 @@
 }
 
 .nameLink:hover {
-  color: var(--color-primary);
+  color: var(--store-accent);
+}
+
+.wishlistBtn {
+  background: none;
+  border: none;
+  color: var(--store-text-tertiary);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.2rem;
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
+}
+
+.wishlistBtn:hover {
+  color: var(--store-accent);
 }
 
 .sku {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--store-text-tertiary);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+}
+
+/* Price Row */
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceLabel {
+  font-size: 0.7rem;
+  color: var(--store-text-tertiary);
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .price {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--color-accent);
-  margin-top: auto;
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.01em;
+  color: var(--store-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .addToCartBtn {
-  width: 100%;
-  padding: 0.65rem;
-  background: var(--color-accent);
-  color: var(--text-inverse);
+  width: 44px;
+  height: 44px;
+  background: var(--store-accent);
+  color: #000;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  flex-shrink: 0;
 }
 
 .addToCartBtn:hover:not(:disabled) {
-  background: var(--color-accent-hover);
+  background: var(--store-accent-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(var(--store-accent-rgb), 0.3);
 }
 
 .addToCartBtn:active:not(:disabled) {
@@ -169,6 +190,6 @@
 }
 
 .addToCartBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
 }

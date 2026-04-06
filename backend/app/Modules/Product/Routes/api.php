@@ -16,7 +16,7 @@ Route::prefix('products')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin/products')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin/products')->middleware(['auth:sanctum', 'role:admin|staff'])->group(function () {
     Route::post('/', [ProductController::class, 'store']);
     Route::put('/{product}', [ProductController::class, 'update']);
     Route::delete('/{product}', [ProductController::class, 'destroy']);

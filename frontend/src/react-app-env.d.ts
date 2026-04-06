@@ -13,11 +13,13 @@ declare module 'react-icons/fi' {
   export const FiArrowRight: IconType;
   export const FiCheck: IconType;
   export const FiCheckCircle: IconType;
+  export const FiClock: IconType;
   export const FiChevronDown: IconType;
   export const FiChevronLeft: IconType;
   export const FiChevronRight: IconType;
   export const FiChevronUp: IconType;
   export const FiCopy: IconType;
+  export const FiDatabase: IconType;
   export const FiDelete: IconType;
   export const FiDownload: IconType;
   export const FiEdit: IconType;
@@ -28,6 +30,7 @@ declare module 'react-icons/fi' {
   export const FiFile: IconType;
   export const FiFilter: IconType;
   export const FiFolder: IconType;
+  export const FiGlobe: IconType;
   export const FiGrid: IconType;
   export const FiHeart: IconType;
   export const FiHome: IconType;
@@ -54,7 +57,9 @@ declare module 'react-icons/fi' {
   export const FiRefreshCw: IconType;
   export const FiSave: IconType;
   export const FiSearch: IconType;
+  export const FiSend: IconType;
   export const FiSettings: IconType;
+  export const FiShield: IconType;
   export const FiShoppingBag: IconType;
   export const FiShoppingCart: IconType;
   export const FiSliders: IconType;
@@ -64,11 +69,14 @@ declare module 'react-icons/fi' {
   export const FiTrash2: IconType;
   export const FiTruck: IconType;
   export const FiUpload: IconType;
+  export const FiUploadCloud: IconType;
   export const FiUser: IconType;
+  export const FiUserCheck: IconType;
   export const FiUserPlus: IconType;
   export const FiUsers: IconType;
   export const FiX: IconType;
   export const FiXCircle: IconType;
+  export const FiZap: IconType;
 }
 
 declare module 'react-icons' {
