@@ -15,7 +15,7 @@ class OrderRepository extends BaseRepository
 
     public function getFilteredOrders(array $filters, int $perPage = 15): LengthAwarePaginator
     {
-        $query = $this->query()->with(['user', 'items.product']);
+        $query = $this->query()->with(['user'])->withCount('items');
 
         if (!empty($filters['search'])) {
             $this->applySearch($query, $filters['search'], ['order_number', 'shipping_name', 'shipping_email']);
